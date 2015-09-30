@@ -2,11 +2,11 @@ package boatsNHoes;
 
 public class Boat {
 	
-	private String ownerID;
 	private String boatName;
 	private String boatType;
 	private String boatLength;
 	
+	BoatDataHandling data = new BoatDataHandling();
 	
 	Member member = new Member();
 	
@@ -18,11 +18,7 @@ public class Boat {
 		*/
 	}
 	
-	public void setOwnerID(String ownerID)
-	//connect member to their boat, by connecting member's ID to his boat's ID
-	{
-		this.ownerID = member.getMemberID();
-	}
+	
 	public void setBoatName(String boatName){
 		this.boatName = boatName;
 	}
@@ -36,11 +32,7 @@ public class Boat {
 		this.boatLength = boatLength;
 	}
 	
-	public String setOwnerID()
-	{
-		return ownerID;
-	}
-	
+
 	public String getBoatName()
 	{
 		return boatName;	

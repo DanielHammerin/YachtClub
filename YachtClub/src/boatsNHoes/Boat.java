@@ -2,9 +2,13 @@ package boatsNHoes;
 
 public class Boat {
 	
+	private String ownerID;
 	private String boatName;
 	private String boatType;
-	private int boatLength;
+	private String boatLength;
+	
+	
+	Member member = new Member();
 	
 	public Boat(/*String boatName,String boatType, int length*/)
 	{
@@ -14,6 +18,11 @@ public class Boat {
 		*/
 	}
 	
+	public void setOwnerID(String ownerID)
+	//connect member to their boat, by connecting member's ID to his boat's ID
+	{
+		this.ownerID = member.getMemberID();
+	}
 	public void setBoatName(String boatName){
 		this.boatName = boatName;
 	}
@@ -22,9 +31,14 @@ public class Boat {
 		this.boatType = boatType;
 	}
 	
-	public void setBoatLength(int boatLength){
+	public void setBoatLength(String boatLength){
 		
 		this.boatLength = boatLength;
+	}
+	
+	public String setOwnerID()
+	{
+		return ownerID;
 	}
 	
 	public String getBoatName()
@@ -37,10 +51,11 @@ public class Boat {
 		return boatType;	
 	}
 	
-	public int getBoatLength()
+	public String getBoatLength()
 	{
 		return boatLength;
 	}
+	
 }
 
 

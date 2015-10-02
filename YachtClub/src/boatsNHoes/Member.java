@@ -1,17 +1,20 @@
 package boatsNHoes;
 
+import java.util.ArrayList;
+
 public class Member {
 	
 	private static String name1;
 	private static String name2;
 	private static String mid;
-	private static int pn;
+	private static int pnr;
 	private static int nBoats;
+	private static ArrayList<Boat> memberBoatList = new ArrayList<Boat>();
 	
-	public void member(String firstName, String lastName, int personalNumber, String memberID, int numberOfBoats) {
+	public void member(String firstName, String lastName, String memberID, int personalNumber, int numberOfBoats) {
 		Member.name1 = firstName;
 		Member.name2 = lastName;
-		Member.pn = personalNumber;
+		Member.pnr = personalNumber;
 		Member.mid = memberID ;
 		Member.nBoats = numberOfBoats;
 	}
@@ -23,7 +26,7 @@ public class Member {
 		Member.name2 = lastName;
 	}
 	public void setMemberPersonalNumber(int pn) {
-		Member.pn = pn;
+		Member.pnr = pn;
 	}
 	public void setMemberID(String memID) {
 		Member.mid = memID;
@@ -39,7 +42,7 @@ public class Member {
 		return name2;
 	}
 	public int getMemberPersonalNumber() {
-		return pn;
+		return pnr;
 	}
 	public String getMemberID() {
 		return mid;

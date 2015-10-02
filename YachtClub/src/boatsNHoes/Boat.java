@@ -5,6 +5,7 @@ public class Boat {
 	private String boatName;
 	private String boatType;
 	private String boatLength;
+	private String ownerID;
 	
 	BoatDataHandling data = new BoatDataHandling();
 	
@@ -31,6 +32,9 @@ public class Boat {
 		
 		this.boatLength = boatLength;
 	}
+	public void setOwnerID(String ID) {
+		this.ownerID = ID;
+	}
 	
 
 	public String getBoatName()
@@ -46,6 +50,10 @@ public class Boat {
 	public String getBoatLength()
 	{
 		return boatLength;
+	}
+
+	public String getOwnerID() {
+		return ownerID;
 	}
 	
 }

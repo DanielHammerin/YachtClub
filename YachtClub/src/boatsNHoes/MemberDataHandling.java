@@ -27,34 +27,38 @@ public class MemberDataHandling {
         createMemberID(temp);
     }
 	
-	public Object changeMember() {
+	public Object changeMember(String ID) {
         Object errmsg = "There is no member with this ID.";
-        Object mem;
         for (int i = 0; i <= members.size(); i++) {
             if (members.get(i).getMemberID().equals(ID)) {
-                mem = members.get(i);
+                System.out.println("Enter the new member's first name: ");
+                members.get(i).setMemberFirstName(sc.nextLine());
+                System.out.println("Enter the new member's last name: ");
+                members.get(i).setMemberLastName(sc.nextLine());
+                System.out.println("Enter the new member's personal number: ");
+                members.get(i).setMemberPersonalNumber(sc.nextInt());
 
-            } else {
+            }
+            else {
                 throw new NoSuchElementException();
-                return errmsg;
             }
         }
+        return errmsg;
 	}
 	
 	public Object deleteMember(String ID) {
         Object errmsg = "There is no member with this ID.";
-        Object mem;
+        Object conf = "Member removed.";
         for (int i = 0; i <= members.size(); i++) {
             if (members.get(i).getMemberID().equals(ID)) {
-                members.get(i)
-
-
-            } else {
+                members.remove(i);
+                return conf;
+            }
+            else {
                 throw new NoSuchElementException();
-                return errmsg;
             }
         }
-
+        return errmsg;
 	}
 	
 	public Object lookUpMember(String ID) {
@@ -65,9 +69,9 @@ public class MemberDataHandling {
             }
             else {
                 throw new NoSuchElementException();
-                return errmsg;
             }
         }
+        return errmsg;
     }
 
     public void createMemberID(String temp) {

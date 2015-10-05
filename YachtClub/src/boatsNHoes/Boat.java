@@ -4,19 +4,19 @@ public class Boat {
 	
 	private String boatName;
 	private String boatType;
-	private String boatLength;
+	private int boatLength;
 	private String ownerID;
 	
 	BoatDataHandling data = new BoatDataHandling();
 	
 	Member member = new Member();
 	
-	public Boat(/*String boatName,String boatType, int length*/)
+	public Boat(String name,String type, int length, String owner)
 	{
-		/*name = boatName;
-		type = boatType;
-		len = length;
-		*/
+		boatName = name;
+		boatType = type;
+		boatLength = length;
+		ownerID = owner;
 	}
 	
 	
@@ -28,7 +28,7 @@ public class Boat {
 		this.boatType = boatType;
 	}
 	
-	public void setBoatLength(String boatLength){
+	public void setBoatLength(int boatLength){
 		
 		this.boatLength = boatLength;
 	}
@@ -47,7 +47,7 @@ public class Boat {
 		return boatType;	
 	}
 	
-	public String getBoatLength()
+	public int getBoatLength()
 	{
 		return boatLength;
 	}

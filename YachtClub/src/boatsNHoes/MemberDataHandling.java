@@ -12,7 +12,6 @@ import java.util.*;
 public class MemberDataHandling {
 
     SQLDAO dao = new SQLDAO();
-	public ArrayList<Member> members = new ArrayList<Member>();
     Scanner sc = new Scanner(System.in);
     Member newMember = new Member();
     Random randInt = new Random();
@@ -45,22 +44,25 @@ public class MemberDataHandling {
      * @param ID, the member ID of the member to be changed.
      */
 	public void changeMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-        for (int i = 0; i <= members.size(); i++) {
-            Member tempMember = members.get(i);
-            if (tempMember.getMemberID().equals(ID)) {
-                System.out.println("Change member's first name to: ");
-                tempMember.setMemberFirstName(sc.nextLine());
-                System.out.println("Change member's last name to: ");
-                tempMember.setMemberLastName(sc.nextLine());
-                System.out.println("Change member's personal number to: ");
-                tempMember.setMemberPersonalNumber(sc.nextLine());
+        try {
+            ArrayList<Member> memArr = dao.getAllMembers();
+            for (int i = 0; i < memArr.size(); i++) {
+                if (memArr.get(i).getMemberID().equals(ID)) {
+                    System.out.println("Change member's first name to: ");
+                    memArr.get(i).setMemberFirstName(sc.nextLine());
+                    System.out.println("Change member's last name to: ");
+                    memArr.get(i).setMemberLastName(sc.nextLine());
+                    System.out.println("Change member's personal number to: ");
+                    memArr.get(i).setMemberPersonalNumber(sc.nextLine());
 
-                dao.updateMember(tempMember);
+                    dao.updateMember(memArr.get(i));
+                } else {
+                    System.out.println("There is no member with that ID.");
+                    throw new NoSuchElementException();
+                }
             }
-            else {
-                System.out.println("There is no member with that ID.");
-                throw new NoSuchElementException();
-            }
+        } catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
+            e.printStackTrace();
         }
 	}
 
@@ -69,17 +71,21 @@ public class MemberDataHandling {
      * @param ID, the member ID of the member to be removed.
      */
 	public void deleteMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-        for (int i = 0; i <= members.size(); i++) {
-            if (members.get(i).getMemberID().equals(ID)) {
-                members.remove(i);
-                dao.deleteMember(ID);
-                System.out.println("Member deleted!");
+        try {
+            ArrayList<Member> memArr = dao.getAllMembers();
+            for (int i = 0; i < memArr.size(); i++) {
+                if (memArr.get(i).getMemberID().equals(ID)) {
+                    memArr.remove(i);
+                    dao.deleteMember(ID);
+                    System.out.println("Member deleted!");
+                } else {
+                    System.out.println("There is no member with that ID.");
+                    throw new NoSuchElementException();
+                }
             }
-            else {
-                System.out.println("There is no member with that ID.");
-                throw new NoSuchElementException();
+        } catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
+                e.printStackTrace();
             }
-        }
     }
 
     /**
@@ -87,14 +93,18 @@ public class MemberDataHandling {
      * @param ID, the member ID of the member to be found.
      */
 	public Object lookUpMember(String ID) {
-        Object errmsg = "There is no member with this ID.";
-        for (int i = 0; i <= members.size(); i++) {
-            if (members.get(i).getMemberID().equals(ID)) {
-                return members.get(i);
+        String errmsg = "No such member!";
+        try {
+            ArrayList<Member> memArr = dao.getAllMembers();
+            for (int i = 0; i < memArr.size(); i++) {
+                if (memArr.get(i).getMemberID().equals(ID)) {
+                    return memArr.get(i);
+                } else {
+                    throw new NoSuchElementException();
+                }
             }
-            else {
-                throw new NoSuchElementException();
-            }
+        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
         }
         return errmsg;
     }
@@ -103,11 +113,13 @@ public class MemberDataHandling {
      * @param temp, temp is made in createMember() and is checked here to ensure that it is unique.
      */
     public void createMemberID(String temp) {
-        for (int i = 0; i <= members.size(); i++) {
-            if (members.size() == 0) {
+        try {
+            ArrayList<Member> memArr = dao.getAllMembers();
+            for (int i = 0; i < memArr.size(); i++) {
+            if (memArr.size() == 0) {
                 newMember.setMemberID(temp);
             }
-            else if (members.get(i).getMemberID().equals(temp)) {                        // If there is already a member with this ID, randomize a new number.
+            else if (memArr.get(i).getMemberID().equals(temp)) {                        // If there is already a member with this ID, randomize a new number.
                 temp = String.valueOf(newMember.getMemberFirstName().charAt(0)) +
                         String.valueOf(newMember.getMemberLastName().charAt(0)) +
                         Integer.toString(randInt.nextInt(900)+100);
@@ -116,6 +128,9 @@ public class MemberDataHandling {
             else {
                 newMember.setMemberID(temp);
             }
+        }
+        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 

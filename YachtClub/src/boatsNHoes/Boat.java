@@ -21,8 +21,8 @@ public class Boat {
 		boatLength = length;
 		ownerID = owner;
 	}
-	
-	
+
+
 	public void setBoatName(String boatName){
 		this.boatName = boatName;
 	}

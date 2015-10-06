@@ -44,11 +44,11 @@ public class MemberDataHandling {
         Object errmsg = "There is no member with this ID.";
         for (int i = 0; i <= members.size(); i++) {
             if (members.get(i).getMemberID().equals(ID)) {
-                System.out.println("Enter the new member's first name: ");
+                System.out.println("Change member's first name to: ");
                 members.get(i).setMemberFirstName(sc.nextLine());
-                System.out.println("Enter the new member's last name: ");
+                System.out.println("Change member's last name to: ");
                 members.get(i).setMemberLastName(sc.nextLine());
-                System.out.println("Enter the new member's personal number: ");
+                System.out.println("Change member's personal number to: ");
                 members.get(i).setMemberPersonalNumber(sc.nextInt());
 
             }

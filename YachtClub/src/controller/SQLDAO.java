@@ -129,8 +129,6 @@ public class SQLDAO {
         ResultSet rs = conn.createStatement().executeQuery(myQuery);
 
         while(rs.next()){
-            Boat b = new Boat(String , String null, int null, String null);
-            b.setOwnerID(rs.getString("ownerID"));
             Boat boat = new Boat(rs.getString("boatName"),rs.getString("boatType"),rs.getInt("boatLength"),rs.getString("ownerID"));
             boats.add(boat);
         }
@@ -158,14 +156,32 @@ public class SQLDAO {
         return  false;
     }
 
+    /**
+     * @param boat, boat to be chekced if it exists in DB.
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public boolean isThereADuplicateBoat(Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-
+        ArrayList<Boat> boatList = new ArrayList<Boat>();
+        for (Boat b : boatList) {
+            if (b.equals(boat)) {
+                return true;
+            }
+        }
+        return false;
 
     }
 
     /**
-     * Deletes a member from the database.
-     * @param memID, the member ID of the member to be removed
+     *
+     * @param memID, the member ID of the member to be removed.
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
      */
     public void deleteMember(String memID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         String myQuery = "DELETE from member where memID='"+memID+"'";
@@ -218,8 +234,8 @@ public class SQLDAO {
 
     /**
      * Updates boat information.
-     * @param ownerID
-     * @param boat
+     * @param ownerID, The boat owners ID of the boat to be updated.
+     * @param boat, The boat to be updated.
      * @throws ClassNotFoundException
      * @throws SQLException
      * @throws InstantiationException
@@ -234,7 +250,7 @@ public class SQLDAO {
 
         ps.setString(1, boat.getBoatName());
         ps.setString(2, boat.getBoatType());
-        ps.setString(3, boat.getBoatLength());
+        ps.setInt(3, boat.getBoatLength());
         ps.setString(4, boat.getOwnerID());
 
         ps.executeUpdate();
@@ -242,7 +258,14 @@ public class SQLDAO {
         conn.close();
     }
 
-
+    /**
+     * Database connection establisher.
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
     public Connection openConnection() throws ClassNotFoundException, SQLException, IllegalAccessException, InstantiationException {
 
         DriverManager.setLoginTimeout(5);

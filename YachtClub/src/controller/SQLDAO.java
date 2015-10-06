@@ -20,7 +20,6 @@ public class SQLDAO {
         String query2 = "insert into member(firstName, lastName, memID, pnr, nBoats)"
                 + " values (?, ?, ?, ?, ?)";
 
-        Properties properties = new Properties();
         Connection conn = null;
         try {
             conn = openConnection();
@@ -55,7 +54,33 @@ public class SQLDAO {
      * @param boat, the boat to be saved.
      */
     public void saveBoat(Member member, Boat boat) {
-        String query = "insert into boat(boatName, boatType, boatLength, ownerID)" + " values (?, ?, ?, ?, ?)";
+        String query = "insert into boat(boatName, boatType, boatLength, ownerID)" + " values (?, ?, ?, ?)";
+
+        Connection conn = null;
+        try {
+            conn = openConnection();
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+            preparedStmt.setString(1, boat.getBoatName());
+            preparedStmt.setString(2, boat.getBoatType());
+            preparedStmt.setInt(3, boat.getBoatLength());
+            preparedStmt.setString(4, boat.getOwnerID());
+
+            preparedStmt.executeUpdate();
+            preparedStmt.close();
+
+            conn.close();
+        }
+        catch (ClassNotFoundException| SQLException | IllegalAccessException | InstantiationException e) {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Connection Error");
+            alert.setHeaderText("Error!");
+            alert.setContentText("The Timeline was not saved due to a Database Connection Error");
+            alert.showAndWait();
+
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -123,15 +148,18 @@ public class SQLDAO {
     public TreeSet<Boat> getMemberBoats(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         TreeSet<Boat> boats = new TreeSet<Boat>();
         Connection conn = openConnection();
-
+        Boat boat = new Boat();
         String myQuery = "SELECT FROM boat WHERE ownerID = '"+member.getMemberID()+"'" ;
 
         ResultSet rs = conn.createStatement().executeQuery(myQuery);
 
         while(rs.next()){
-            Boat boat = new Boat(rs.getString("boatName"),rs.getString("boatType"),rs.getInt("boatLength"),rs.getString("ownerID"));
-            boats.add(boat);
+            boat.setBoatName(rs.getString("boatName"));
+            boat.setBoatType(rs.getString("boatType"));
+            boat.setBoatLength(rs.getInt("boatLength"));
+            boat.setOwnerID(rs.getString("ownerID"));
         }
+        boats.add(boat);
         conn.close();
         return  boats;
     }
@@ -192,7 +220,7 @@ public class SQLDAO {
         c.close();
     }
 
-    public void removeBoat(String memID, Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public void deleteBoat(String memID, Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
 
         String query;
         if(boat instanceof  Boat){

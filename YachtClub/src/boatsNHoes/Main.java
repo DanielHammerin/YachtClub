@@ -1,5 +1,6 @@
 package boatsNHoes;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
@@ -15,12 +16,14 @@ public class Main {
     private static String editBoat = "editboat";
     private static String deleteBoat = "deleteboat";
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
 
+        System.out.println("Enter any of the commands to do various things.");
         Scanner sc = new Scanner(System.in);
         String command = sc.nextLine();
         MemberDataHandling mdh = new MemberDataHandling();
         BoatDataHandling bdh = new BoatDataHandling();
+
 
         if (command.equals(addNewMember)) {
             mdh.createMember();
@@ -42,16 +45,27 @@ public class Main {
             bdh.addNewBoat(ownerID);
         }
         else if (command.equals(editBoat)) {
-
+            String ownerID = getMemID();
+            String boatName = getBoatName();
+            bdh.changeBoatData(ownerID, boatName);
         }
         else if (command.equals(deleteBoat)){
-            bdh.deleteBoat();
+            String ownerID = getMemID();
+            String boatName = getBoatName();
+            bdh.deleteBoat(ownerID, boatName);
         }
     }
     protected static String getMemID() {
         Scanner scMem = new Scanner(System.in);
         System.out.println("Please enter the ID of the member you wish to change: ");
         String memID = scMem.nextLine();
-        return memID.toString();
+        return memID;
+    }
+
+    protected static String getBoatName() {
+        Scanner scBoatName = new Scanner(System.in);
+        System.out.println("Please enter the name of the boat to be accessed: ");
+        String boatName = scBoatName.nextLine();
+        return boatName;
     }
 }

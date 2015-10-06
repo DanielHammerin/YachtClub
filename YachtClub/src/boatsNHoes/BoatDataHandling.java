@@ -5,51 +5,56 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Created by Markus Alshreydeh & Daniel Hammerin 2015-10-06
+ * w0w0w00w
+ */
 public class BoatDataHandling {
 	Random rnd = new Random(); //Calling on random in order to generate random numbers for the boatID
-	ArrayList<String> boatArr = new ArrayList<String>();	//the array where the boatID's will be saved
+	ArrayList<Boat> boatArr = new ArrayList<Boat>();	//the array where the boatID's will be saved
 	Boat boat = new Boat();
 	String boatID = null;
 	Scanner scan = new Scanner(System.in);
-	public void addNewBoat(){	// this constructur method will be called upon in the Main class in 
+
+	public void addNewBoat(String ownerID){	// this constructur method will be called upon in the Main class in
 		// order to register the boats using their information
 		System.out.println("Set Boat Name");
 		boat.setBoatName(scan.nextLine());
 		System.out.println("Set Boat's Length");
-		boat.setBoatLength(scan.nextLine());
+		boat.setBoatLength(Integer.parseInt(scan.nextLine()));
 		System.out.println("Set Boat's Type");
 		boat.setBoatType(scan.nextLine());
 
+		boatArr.add(boat);
 	}
 
 
-	public ArrayList registerNewBoat(ArrayList boatArr, String boatID){
-		//add the registered boat to the arraylist
-		boatArr.add(boatID);
-		return boatArr;
-
-	}
-	public Object changeBoatData(ArrayList boatArr){
+	public void changeBoatData(String ownerID, String boatName){
 
 		for(int i = 0; i < boatArr.size(); i++)
 		{
-			if(boatArr.getOwnerID().equals(boatID))
+			if(boat.getOwnerID().equals(ownerID) && boat.getBoatName().equals(boatName))
 			{
 				System.out.println("Set a new Boat Name: ");
-				boatArr.get(i).setBoatName(scan.nextLine());
+				boat.setBoatName(scan.nextLine());
 				System.out.println("Set a new Boat Length");
-				boatArr.get(i).setBoatLenght(scan.nextLine());
+				boat.setBoatLength(Integer.parseInt(scan.nextLine()));
 				System.out.println("Set a new Boat Type");
-				boatArr.get(i).setBoatType(scan.nextLine());
+				boat.setBoatType(scan.nextLine());
+				System.out.println("Boat added!");
+			}
+			else {
+				System.out.println("ERROR, incorrect owner ID or boat name.");
+				throw new NoSuchElementException();
+
 			}
 		}
-		String x = "Error, Invalid boat ID";
-		return x;
 	}
-	public String deleteBoat(ArrayList boatArr){
+
+	public String deleteBoat(String ownerID, String boatName){
 		for(int i = 0; i < boatArr.size(); i++)
 		{
-			if (boatArr.get(i).getOwnerID.equals(ownerID))
+			if (boat.getOwnerID().equals(ownerID) && boat.getBoatName().equals(boatName))
 			{
 				boatArr.remove(i);
 				String x = "the boat has been removed";

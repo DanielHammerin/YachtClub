@@ -1,5 +1,8 @@
 package boatsNHoes;
 
+import controller.SQLDAO;
+
+import java.sql.SQLException;
 import java.util.*;
 
 /*
@@ -7,7 +10,8 @@ import java.util.*;
  * Created by Daniel Hammerin 05-10-2015
  */
 public class MemberDataHandling {
-	
+
+    SQLDAO dao = new SQLDAO();
 	ArrayList<Member> members = new ArrayList<Member>();
     Scanner sc = new Scanner(System.in);
     Member newMember = new Member();
@@ -34,49 +38,51 @@ public class MemberDataHandling {
                 String.valueOf(newMember.getMemberLastName().charAt(0)) +
                 Integer.toString(randInt.nextInt(900)+100);
         createMemberID(temp);                                               // Calls the method with temp.
+
+        dao.saveMember(newMember);
     }
 
     /**
      * Method for changing an already existing member.
      * @param ID, the member ID of the member to be changed.
      */
-	public Object changeMember(String ID) {
-        Object errmsg = "There is no member with this ID.";
+	public void changeMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         for (int i = 0; i <= members.size(); i++) {
-            if (members.get(i).getMemberID().equals(ID)) {
+            Member tempMember = members.get(i);
+            if (tempMember.getMemberID().equals(ID)) {
                 System.out.println("Change member's first name to: ");
-                members.get(i).setMemberFirstName(sc.nextLine());
+                tempMember.setMemberFirstName(sc.nextLine());
                 System.out.println("Change member's last name to: ");
-                members.get(i).setMemberLastName(sc.nextLine());
+                tempMember.setMemberLastName(sc.nextLine());
                 System.out.println("Change member's personal number to: ");
-                members.get(i).setMemberPersonalNumber(sc.nextInt());
+                tempMember.setMemberPersonalNumber(sc.nextInt());
 
+                dao.updateMember(tempMember);
             }
             else {
+                System.out.println("There is no member with that ID.");
                 throw new NoSuchElementException();
             }
         }
-        return errmsg;
 	}
 
     /**
      * Method for deleting a member
      * @param ID, the member ID of the member to be removed.
      */
-	public Object deleteMember(String ID) {
-        Object errmsg = "There is no member with this ID.";
-        Object conf = "Member removed.";
+	public void deleteMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         for (int i = 0; i <= members.size(); i++) {
             if (members.get(i).getMemberID().equals(ID)) {
                 members.remove(i);
-                return conf;
+                dao.deleteMember(ID);
+                System.out.println("Member deleted!");
             }
             else {
+                System.out.println("There is no member with that ID.");
                 throw new NoSuchElementException();
             }
         }
-        return errmsg;
-	}
+    }
 
     /**
      * Method for finding a member

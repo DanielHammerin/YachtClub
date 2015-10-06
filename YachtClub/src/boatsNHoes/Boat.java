@@ -8,13 +8,12 @@ public class Boat {
 	private String boatType;
 	private int boatLength;
 	private String ownerID;
-	private String boatID;
 	
 	BoatDataHandling data = new BoatDataHandling();
 	
 	Member member = new Member();
 	
-	public Boat(String name,String type, int length, String owner)
+	public void Boat(String name,String type, int length, String owner)
 	{
 		boatName = name;
 		boatType = type;
@@ -57,16 +56,6 @@ public class Boat {
 
 	public String getOwnerID() {
 		return ownerID;
-	}
-	
-	public String getBoatID(Random rnd, String boatID)
-	{
-		    boatID = String.valueOf(getBoatName().charAt(0)) +
-	                String.valueOf(getBoatType().charAt(0)) +
-	                Integer.toString(rnd.nextInt(900)+100);
-
-		return boatID;
-		
 	}
 	
 }

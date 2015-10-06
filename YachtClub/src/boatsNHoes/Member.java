@@ -11,13 +11,13 @@ public class Member {
 	private static String name1;
 	private static String name2;
 	private static String mid;
-	private static int pnr;
+	private static String pnr;
 	private static int nBoats;
 
 	/*
 	 * Constructor for the member object.
 	 */
-	public void member(String firstName, String lastName, String memberID, int personalNumber, int numberOfBoats) {
+	public void member(String firstName, String lastName, String memberID, String personalNumber, int numberOfBoats) {
 		Member.name1 = firstName;
 		Member.name2 = lastName;
 		Member.pnr = personalNumber;
@@ -33,7 +33,7 @@ public class Member {
 	public void setMemberLastName(String lastName) {
 		Member.name2 = lastName;
 	}
-	public void setMemberPersonalNumber(int pn) {
+	public void setMemberPersonalNumber(String pn) {
 		Member.pnr = pn;
 	}
 	public void setMemberID(String memID) {
@@ -49,7 +49,7 @@ public class Member {
 	public String getMemberLastName() {
 		return name2;
 	}
-	public int getMemberPersonalNumber() {
+	public String getMemberPersonalNumber() {
 		return pnr;
 	}
 	public String getMemberID() {

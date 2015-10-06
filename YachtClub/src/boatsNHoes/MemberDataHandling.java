@@ -26,9 +26,7 @@ public class MemberDataHandling {
         System.out.println("Enter the new member's last name: ");
         newMember.setMemberLastName(sc.nextLine());
         System.out.println("Enter the new member's personal number: ");
-        newMember.setMemberPersonalNumber(sc.nextInt());
-        System.out.println("Enter the new member's number of boats: ");
-        newMember.setMemberNBoats(sc.nextInt());
+        newMember.setMemberPersonalNumber((sc.nextLine()));
 
         /**
          * Below is the method for creating a member ID
@@ -38,7 +36,7 @@ public class MemberDataHandling {
                 String.valueOf(newMember.getMemberLastName().charAt(0)) +
                 Integer.toString(randInt.nextInt(900)+100);
         createMemberID(temp);                                               // Calls the method with temp.
-
+        members.add(newMember);
         dao.saveMember(newMember);
     }
 
@@ -55,7 +53,7 @@ public class MemberDataHandling {
                 System.out.println("Change member's last name to: ");
                 tempMember.setMemberLastName(sc.nextLine());
                 System.out.println("Change member's personal number to: ");
-                tempMember.setMemberPersonalNumber(sc.nextInt());
+                tempMember.setMemberPersonalNumber(sc.nextLine());
 
                 dao.updateMember(tempMember);
             }
@@ -106,7 +104,10 @@ public class MemberDataHandling {
      */
     public void createMemberID(String temp) {
         for (int i = 0; i <= members.size(); i++) {
-            if (members.get(i).getMemberID().equals(temp)) {                        // If there is already a member with this ID, randomize a new number.
+            if (members.size() == 0) {
+                newMember.setMemberID(temp);
+            }
+            else if (members.get(i).getMemberID().equals(temp)) {                        // If there is already a member with this ID, randomize a new number.
                 temp = String.valueOf(newMember.getMemberFirstName().charAt(0)) +
                         String.valueOf(newMember.getMemberLastName().charAt(0)) +
                         Integer.toString(randInt.nextInt(900)+100);

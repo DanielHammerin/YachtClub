@@ -6,12 +6,13 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Created by Markus Alshreydeh & Daniel Hammerin 2015-10-06
+ * Created by Daniel Hammerin & Markus Alshreydeh 2015-10-06
  * w0w0w00w
  */
 public class BoatDataHandling {
-	Random rnd = new Random(); //Calling on random in order to generate random numbers for the boatID
 	ArrayList<Boat> boatArr = new ArrayList<Boat>();	//the array where the boatID's will be saved
+	MemberDataHandling mdh = new MemberDataHandling();
+
 	Boat boat = new Boat();
 	String boatID = null;
 	Scanner scan = new Scanner(System.in);
@@ -24,8 +25,18 @@ public class BoatDataHandling {
 		boat.setBoatLength(Integer.parseInt(scan.nextLine()));
 		System.out.println("Set Boat's Type");
 		boat.setBoatType(scan.nextLine());
+		boat.setOwnerID(ownerID);
 
-		boatArr.add(boat);
+		for (int i = 0; i <= mdh.members.size(); i++) {
+			if (mdh.members.get(i).getMemberID().equals(ownerID)) {
+				mdh.members.get(i).setMemberNBoats(+1);
+				boatArr.add(boat);
+			}
+			else {
+				System.out.println("There is no member with this ID!");
+				throw new NoSuchElementException();
+			}
+		}
 	}
 
 

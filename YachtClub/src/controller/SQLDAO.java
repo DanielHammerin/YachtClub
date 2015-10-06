@@ -17,18 +17,18 @@ public class SQLDAO {
      */
     public void saveMember(Member member) {
 
-        String query2 = "insert into member(firstName, lastName, memID, pnr, nBoats)"
+        String query2 = "INSERT into member(firstName, lastName, memID, pnr, nBoats)"
                 + " values (?, ?, ?, ?, ?)";
 
-        Connection conn = null;
+
         try {
-            conn = openConnection();
+            Connection conn = openConnection();
             PreparedStatement preparedStmt = conn.prepareStatement(query2);
 
             preparedStmt.setString(1, member.getMemberFirstName());
             preparedStmt.setString(2, member.getMemberLastName());
             preparedStmt.setString(3, member.getMemberID());
-            preparedStmt.setInt(4, member.getMemberPersonalNumber());
+            preparedStmt.setString(4, member.getMemberPersonalNumber());
             preparedStmt.setInt(5, member.getMemberNBoats());
 
             preparedStmt.executeUpdate();
@@ -37,13 +37,7 @@ public class SQLDAO {
             conn.close();
         }
         catch (ClassNotFoundException| SQLException | IllegalAccessException | InstantiationException e) {
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Database Connection Error");
-            alert.setHeaderText("Error!");
-            alert.setContentText("The Timeline was not saved due to a Database Connection Error");
-            alert.showAndWait();
-
+            System.out.println("Couldn't save Member because of a database connection error.");
             e.printStackTrace();
         }
     }
@@ -72,14 +66,7 @@ public class SQLDAO {
             conn.close();
         }
         catch (ClassNotFoundException| SQLException | IllegalAccessException | InstantiationException e) {
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Database Connection Error");
-            alert.setHeaderText("Error!");
-            alert.setContentText("The Timeline was not saved due to a Database Connection Error");
-            alert.showAndWait();
-
-            e.printStackTrace();
+            System.out.println("Couldn't save boat because of a database connection error.");
         }
     }
 
@@ -101,7 +88,7 @@ public class SQLDAO {
             mem.setMemberFirstName(rs.getString("firstName"));
             mem.setMemberLastName(rs.getString("lastName"));
             mem.setMemberID(rs.getString("memID"));
-            mem.setMemberPersonalNumber(rs.getInt("pnr"));
+            mem.setMemberPersonalNumber(rs.getString("pnr"));
             members.add(mem);
 
         }
@@ -129,7 +116,7 @@ public class SQLDAO {
             member.setMemberFirstName(rs.getString("firstName"));
             member.setMemberLastName(rs.getString("firstName"));
             member.setMemberID(rs.getString("memID"));
-            member.setMemberPersonalNumber(rs.getInt("pnr"));
+            member.setMemberPersonalNumber(rs.getString("pnr"));
             member.setMemberNBoats(rs.getInt("nBoats"));
         }
         c.close();
@@ -252,7 +239,7 @@ public class SQLDAO {
         ps.setString(1,member.getMemberFirstName());
         ps.setString(2, member.getMemberLastName());
         ps.setString(3, member.getMemberID());
-        ps.setInt(4, member.getMemberPersonalNumber());
+        ps.setString(4, member.getMemberPersonalNumber());
         ps.setInt(5, member.getMemberNBoats());
 
         ps.executeUpdate();
@@ -297,8 +284,8 @@ public class SQLDAO {
     public Connection openConnection() throws ClassNotFoundException, SQLException, IllegalAccessException, InstantiationException {
 
         DriverManager.setLoginTimeout(5);
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/YachtClubDB","root","");;
+        Class.forName("com.mysql.jdbc.Driver").newInstance();                                               //fix jdbc.driver
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/YachtClubDB","root","");
         return conn;
     }
 

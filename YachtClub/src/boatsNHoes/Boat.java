@@ -9,8 +9,6 @@ public class Boat {
 	private int boatLength;
 	private String ownerID;
 	
-	BoatDataHandling data = new BoatDataHandling();
-	
 	Member member = new Member();
 	
 	public void Boat(String name,String type, int length, String owner)

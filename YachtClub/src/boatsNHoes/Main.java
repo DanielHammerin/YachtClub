@@ -39,7 +39,7 @@ public class Main {
         }
         else if (command.equals(addNewBoat)) {
             String ownerID = getMemID();
-            bdh.
+            bdh.addNewBoat(ownerID);
         }
         else if (command.equals(editBoat)) {
 

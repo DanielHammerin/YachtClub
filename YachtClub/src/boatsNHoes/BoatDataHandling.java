@@ -18,7 +18,7 @@ public class BoatDataHandling {
 	Scanner scan = new Scanner(System.in);
 	
 	
-	public addNewBoat(){									// this constructur method will be called upon in the Main class in
+	public void addNewBoat(String memID){									// this constructur method will be called upon in the Main class in
 																// order to register the boats using their information
 		
 		System.out.println("Set Boat Name");

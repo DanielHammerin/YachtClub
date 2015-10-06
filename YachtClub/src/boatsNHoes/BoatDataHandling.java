@@ -1,5 +1,8 @@
 package boatsNHoes;
 
+import controller.SQLDAO;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -11,11 +14,12 @@ import java.util.Scanner;
  */
 public class BoatDataHandling {
 	ArrayList<Boat> boatArr = new ArrayList<Boat>();	//the array where the boatID's will be saved
-	MemberDataHandling mdh = new MemberDataHandling();
+
 
 	Boat boat = new Boat();
 	String boatID = null;
 	Scanner scan = new Scanner(System.in);
+	SQLDAO dao = new SQLDAO();
 
 	public void addNewBoat(String ownerID){	// this constructur method will be called upon in the Main class in
 		// order to register the boats using their information
@@ -27,16 +31,25 @@ public class BoatDataHandling {
 		boat.setBoatType(scan.nextLine());
 		boat.setOwnerID(ownerID);
 
-		for (int i = 0; i <= mdh.members.size(); i++) {
-			if (mdh.members.get(i).getMemberID().equals(ownerID)) {
-				mdh.members.get(i).setMemberNBoats(+1);
-				boatArr.add(boat);
-			}
-			else {
-				System.out.println("There is no member with this ID!");
-				throw new NoSuchElementException();
-			}
-		}
+
+
+			try {
+				ArrayList<Member> memList = dao.getAllMembers();
+				for (int i = 0; i < memList.size(); i++) {
+					//System.out.println(memList.get(i).getMemberID());
+					if (memList.get(i).getMemberID().equals(ownerID)) {
+						memList.get(i).setMemberNBoats(+1);
+						boatArr.add(boat);
+						dao.saveBoat(boat);
+					} else {
+						System.out.println("There is no member with this ID!");
+						throw new NoSuchElementException();
+					}
+				}
+				}catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
+					e.printStackTrace();
+				}
+
 	}
 
 
@@ -62,21 +75,18 @@ public class BoatDataHandling {
 		}
 	}
 
-	public String deleteBoat(String ownerID, String boatName){
+	public void deleteBoat(String ownerID, String boatName){
 		for(int i = 0; i < boatArr.size(); i++)
 		{
 			if (boat.getOwnerID().equals(ownerID) && boat.getBoatName().equals(boatName))
 			{
 				boatArr.remove(i);
-				String x = "the boat has been removed";
-				return x;
+				System.out.println("Boat successfully removed!");
 			}
 
 
 		}
-
-		String y = "Error, Invalid boat ID";
-		return y;
+		System.out.println("No such boat found...");
 	}
 }
 

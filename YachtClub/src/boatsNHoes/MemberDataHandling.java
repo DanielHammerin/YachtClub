@@ -12,7 +12,7 @@ import java.util.*;
 public class MemberDataHandling {
 
     SQLDAO dao = new SQLDAO();
-	ArrayList<Member> members = new ArrayList<Member>();
+	public ArrayList<Member> members = new ArrayList<Member>();
     Scanner sc = new Scanner(System.in);
     Member newMember = new Member();
     Random randInt = new Random();
@@ -36,7 +36,7 @@ public class MemberDataHandling {
                 String.valueOf(newMember.getMemberLastName().charAt(0)) +
                 Integer.toString(randInt.nextInt(900)+100);
         createMemberID(temp);                                               // Calls the method with temp.
-        members.add(newMember);
+
         dao.saveMember(newMember);
     }
 

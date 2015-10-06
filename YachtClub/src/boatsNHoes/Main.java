@@ -1,5 +1,7 @@
 package boatsNHoes;
 
+import controller.SQLDAO;
+
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -19,10 +21,20 @@ public class Main {
     public static void main(String args[]) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
 
         System.out.println("Enter any of the commands to do various things.");
-        Scanner sc = new Scanner(System.in);
-        String command = sc.nextLine();
+        System.out.println("Cmd: 'addmember' = add new member");
+        System.out.println("Cmd: 'editmember' = edit member");
+        System.out.println("Cmd: 'deletemember' = delete member");
+        System.out.println("Cmd: 'findmember' = look up a member");
+        System.out.println("Cmd: 'addboat' = add new boat");
+        System.out.println("Cmd: 'editboat' = edit boat data");
+        System.out.println("Cmd: 'deleteboat' = delete boat");
+
         MemberDataHandling mdh = new MemberDataHandling();
         BoatDataHandling bdh = new BoatDataHandling();
+
+
+        Scanner sc = new Scanner(System.in);
+        String command = sc.nextLine();
 
 
         if (command.equals(addNewMember)) {
@@ -57,7 +69,7 @@ public class Main {
     }
     protected static String getMemID() {
         Scanner scMem = new Scanner(System.in);
-        System.out.println("Please enter the ID of the member you wish to change: ");
+        System.out.println("Please enter the ID of the member you wish to access: ");
         String memID = scMem.nextLine();
         return memID;
     }

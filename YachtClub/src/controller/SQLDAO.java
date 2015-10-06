@@ -44,10 +44,9 @@ public class SQLDAO {
 
     /**
      * Adds a new boat to a member.
-     * @param member, the member ID of the owner.
      * @param boat, the boat to be saved.
      */
-    public void saveBoat(Member member, Boat boat) {
+    public void saveBoat(Boat boat) {
         String query = "insert into boat(boatName, boatType, boatLength, ownerID)" + " values (?, ?, ?, ?)";
 
         Connection conn = null;
@@ -74,10 +73,10 @@ public class SQLDAO {
      * Retrieves all members from the memberlist table.
      * @return
      */
-    public LinkedList<Member> getAllMembers() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
-        String myQuery = "SELECT FROM members";
+    public ArrayList<Member> getAllMembers() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
+        String myQuery = "SELECT * FROM member";
 
-        LinkedList<Member> members = new LinkedList<Member>();
+        ArrayList<Member> members = new ArrayList<>();
 
         Connection c = openConnection();
         Statement s = c.createStatement();
@@ -89,11 +88,38 @@ public class SQLDAO {
             mem.setMemberLastName(rs.getString("lastName"));
             mem.setMemberID(rs.getString("memID"));
             mem.setMemberPersonalNumber(rs.getString("pnr"));
+            mem.setMemberNBoats(rs.getInt("nBoats"));
             members.add(mem);
 
         }
         c.close();
         return members;
+    }
+
+    /**
+     * Retrieves all members from the memberlist table.
+     * @return
+     */
+    public ArrayList<Boat> getAllBoats() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
+        String myQuery = "SELECT * FROM boat";
+
+        ArrayList<Boat> boats = new ArrayList<>();
+
+        Connection c = openConnection();
+        Statement s = c.createStatement();
+        ResultSet rs = s.executeQuery(myQuery);
+
+        while (rs.next()) {
+            Boat b = new Boat();
+            b.setBoatName(rs.getString("boatName"));
+            b.setBoatType(rs.getString("boatType"));
+            b.setBoatLength(rs.getInt("boatLength"));
+            b.setOwnerID(rs.getString("ownerID"));
+            boats.add(b);
+
+        }
+        c.close();
+        return boats;
     }
 
     /**
@@ -132,8 +158,8 @@ public class SQLDAO {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public TreeSet<Boat> getMemberBoats(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-        TreeSet<Boat> boats = new TreeSet<Boat>();
+    public ArrayList<Boat> getMemberBoats(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        ArrayList<Boat> boats = new ArrayList<>();
         Connection conn = openConnection();
         Boat boat = new Boat();
         String myQuery = "SELECT FROM boat WHERE ownerID = '"+member.getMemberID()+"'" ;
@@ -159,12 +185,10 @@ public class SQLDAO {
      * @throws Exception
      */
     public boolean isThereADuplicateMember(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-        LinkedList<Member> members = getAllMembers();
+        ArrayList<Member> members = getAllMembers();
         for(Member m : members){
             if(Objects.equals(m.getMemberID(), member.getMemberID())) {
-                Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setTitle("Duplicate Member");
-                a.setContentText("There already exists a member with the ID: "+m.getMemberID());
+                System.out.println("This member already exists");
                 return true;
             }
         }

@@ -33,25 +33,25 @@ public class BoatDataHandling {
 
 
 
-			try {
-				ArrayList<Member> memList = dao.getAllMembers();
-				for (int i = 0; i < memList.size(); i++) {
-					//System.out.println(memList.get(i).getMemberID());
-					if (memList.get(i).getMemberID().equals(ownerID)) {
-						memList.get(i).setMemberNBoats(+1);
-						boatArr.add(boat);
-						dao.saveBoat(boat);
-					} else {
-						System.out.println("There is no member with this ID!");
-						throw new NoSuchElementException();
-					}
+		try {
+			ArrayList<Member> memList = dao.getAllMembers();
+			for (int i = 0; i < memList.size(); i++) {
+				//System.out.println(memList.get(i).getMemberID());
+				if (memList.get(i).getMemberID().equals(ownerID)) {
+					memList.get(i).setMemberNBoats(+1);
+					boatArr.add(boat);
+					dao.saveBoat(boat);
+				} else {
+					System.out.println("There is no member with this ID!");
+					throw new NoSuchElementException();
 				}
-				}catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
-					e.printStackTrace();
-				}
+			}
+		}
+		catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
+			e.printStackTrace();
+		}
 
 	}
-
 
 	public void changeBoatData(String ownerID, String boatName){
 
@@ -73,6 +73,24 @@ public class BoatDataHandling {
 
 			}
 		}
+
+
+		try {
+			ArrayList<Member> memList = dao.getAllMembers();
+			for (int i = 0; i < memList.size(); i++) {
+				//System.out.println(memList.get(i).getMemberID());
+				if (memList.get(i).getMemberID().equals(ownerID)) {
+					memList.get(i).setMemberNBoats(+1);
+					boatArr.add(boat);
+					dao.saveBoat(boat);
+				} else {
+					System.out.println("There is no member with this Name or ID");
+					throw new NoSuchElementException();
+				}
+			}
+		}catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
+			e.printStackTrace();
+		}
 	}
 
 	public void deleteBoat(String ownerID, String boatName){
@@ -87,7 +105,29 @@ public class BoatDataHandling {
 
 		}
 		System.out.println("No such boat found...");
+
+
+
+		try {
+			ArrayList<Member> memList = dao.getAllMembers();
+			for (int i = 0; i < memList.size(); i++) {
+				//System.out.println(memList.get(i).getMemberID());
+				if (memList.get(i).getMemberID().equals(ownerID)) {
+					memList.get(i).setMemberNBoats(+1);
+					boatArr.add(boat);
+					dao.saveBoat(boat);
+				}
+				else
+				{
+					System.out.println("There is no Boat with this ID!");
+					throw new NoSuchElementException();
+				}
+			}
+		}
+
+		catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
-
-

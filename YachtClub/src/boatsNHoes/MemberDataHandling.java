@@ -37,7 +37,7 @@ public class MemberDataHandling {
                 String.valueOf(newMember.getMemberLastName().charAt(0)) +
                 Integer.toString(randInt.nextInt(900)+100);
         createMemberID(temp);                                               // Calls the method with temp.
-
+        newMember.setMemberID(temp);
         SQLDAO.saveMember(newMember);
     }
 
@@ -94,32 +94,36 @@ public class MemberDataHandling {
      * Method for finding a member
      * @param ID, the member ID of the member to be found.
      */
-	public Object lookUpMember(String ID) {
+	public void lookUpMember(String ID) {
         String errmsg = "No such member!";
         try {
             ArrayList<Member> memArr = SQLDAO.getAllMembers();
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
-                    return memArr.get(i);
+                    System.out.println("Member first name: " + memArr.get(i).getMemberFirstName());
+                    System.out.println("Member last name: " + memArr.get(i).getMemberLastName());
+                    System.out.println("Member ID: " + memArr.get(i).getMemberID());
+                    System.out.println("Member personal number: " + memArr.get(i).getMemberPersonalNumber());
+                    System.out.println("Member number of boats: " + memArr.get(i).getMemberNBoats());
                 } else {
+                    System.out.println("No such member found!");
                     throw new NoSuchElementException();
                 }
             }
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        return errmsg;
     }
     /**
      * Method for creating a unique member ID.
      * @param temp, temp is made in createMember() and is checked here to ensure that it is unique.
      */
-    public void createMemberID(String temp) {
+    public String createMemberID(String temp) {
         try {
             ArrayList<Member> memArr = SQLDAO.getAllMembers();
             for (int i = 0; i < memArr.size(); i++) {
             if (memArr.size() == 0) {
-                newMember.setMemberID(temp);
+                return temp;
             }
             else if (memArr.get(i).getMemberID().equals(temp)) {                        // If there is already a member with this ID, randomize a new number.
                 temp = String.valueOf(newMember.getMemberFirstName().charAt(0)) +
@@ -127,13 +131,11 @@ public class MemberDataHandling {
                         Integer.toString(randInt.nextInt(900)+100);
                 createMemberID(temp);
             }
-            else {
-                newMember.setMemberID(temp);
-            }
         }
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+        return temp;
     }
 
 }

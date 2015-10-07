@@ -5,13 +5,15 @@ import controller.SQLDAO;
 import java.sql.SQLException;
 import java.util.*;
 
+import static controller.SQLDAO.*;
+
 /*
  * Class for handling member data.
  * Created by Daniel Hammerin 05-10-2015
  */
 public class MemberDataHandling {
 
-    SQLDAO dao = new SQLDAO();
+    //SQLDAO dao = new SQLDAO();
     Scanner sc = new Scanner(System.in);
     Member newMember = new Member();
     Random randInt = new Random();
@@ -36,7 +38,7 @@ public class MemberDataHandling {
                 Integer.toString(randInt.nextInt(900)+100);
         createMemberID(temp);                                               // Calls the method with temp.
 
-        dao.saveMember(newMember);
+        SQLDAO.saveMember(newMember);
     }
 
     /**
@@ -45,7 +47,7 @@ public class MemberDataHandling {
      */
 	public void changeMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         try {
-            ArrayList<Member> memArr = dao.getAllMembers();
+            ArrayList<Member> memArr = SQLDAO.getAllMembers();
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
                     System.out.println("Change member's first name to: ");
@@ -55,7 +57,7 @@ public class MemberDataHandling {
                     System.out.println("Change member's personal number to: ");
                     memArr.get(i).setMemberPersonalNumber(sc.nextLine());
 
-                    dao.updateMember(memArr.get(i));
+                    SQLDAO.updateMember(memArr.get(i));
                 } else {
                     System.out.println("There is no member with that ID.");
                     throw new NoSuchElementException();
@@ -72,11 +74,11 @@ public class MemberDataHandling {
      */
 	public void deleteMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         try {
-            ArrayList<Member> memArr = dao.getAllMembers();
+            ArrayList<Member> memArr = SQLDAO.getAllMembers();
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
                     memArr.remove(i);
-                    dao.deleteMember(ID);
+                    SQLDAO.deleteMember(ID);
                     System.out.println("Member deleted!");
                 } else {
                     System.out.println("There is no member with that ID.");
@@ -95,7 +97,7 @@ public class MemberDataHandling {
 	public Object lookUpMember(String ID) {
         String errmsg = "No such member!";
         try {
-            ArrayList<Member> memArr = dao.getAllMembers();
+            ArrayList<Member> memArr = SQLDAO.getAllMembers();
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
                     return memArr.get(i);
@@ -114,7 +116,7 @@ public class MemberDataHandling {
      */
     public void createMemberID(String temp) {
         try {
-            ArrayList<Member> memArr = dao.getAllMembers();
+            ArrayList<Member> memArr = SQLDAO.getAllMembers();
             for (int i = 0; i < memArr.size(); i++) {
             if (memArr.size() == 0) {
                 newMember.setMemberID(temp);

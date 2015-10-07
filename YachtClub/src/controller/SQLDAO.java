@@ -15,7 +15,7 @@ public class SQLDAO {
      * Saves the passed member into the database.
      * @param member, the member to be saved.
      */
-    public void saveMember(Member member) {
+    public static void saveMember(Member member) {
 
         String query2 = "INSERT into member(firstName, lastName, memID, pnr, nBoats)"
                 + " values (?, ?, ?, ?, ?)";
@@ -46,7 +46,7 @@ public class SQLDAO {
      * Adds a new boat to a member.
      * @param boat, the boat to be saved.
      */
-    public void saveBoat(Boat boat) {
+    public static void saveBoat(String memberID, Boat boat) {
         String query = "insert into boat(boatName, boatType, boatLength, ownerID)" + " values (?, ?, ?, ?)";
 
         Connection conn = null;
@@ -73,7 +73,7 @@ public class SQLDAO {
      * Retrieves all members from the memberlist table.
      * @return
      */
-    public ArrayList<Member> getAllMembers() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
+    public static ArrayList<Member> getAllMembers() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         String myQuery = "SELECT * FROM member";
 
         ArrayList<Member> members = new ArrayList<>();
@@ -100,7 +100,7 @@ public class SQLDAO {
      * Retrieves all members from the memberlist table.
      * @return
      */
-    public ArrayList<Boat> getAllBoats() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
+    public static ArrayList<Boat> getAllBoats() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         String myQuery = "SELECT * FROM boat";
 
         ArrayList<Boat> boats = new ArrayList<>();
@@ -131,7 +131,7 @@ public class SQLDAO {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public Member loadMember(String memID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public static Member loadMember(String memID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         String myQuery = "SELECT FROM member WHERE memID = '"+memID+"'" ;
         Member member = new Member();
         Connection c = openConnection();
@@ -158,7 +158,7 @@ public class SQLDAO {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public ArrayList<Boat> getMemberBoats(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public static ArrayList<Boat> getMemberBoats(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         ArrayList<Boat> boats = new ArrayList<>();
         Connection conn = openConnection();
         Boat boat = new Boat();
@@ -184,7 +184,7 @@ public class SQLDAO {
      * @return
      * @throws Exception
      */
-    public boolean isThereADuplicateMember(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public static boolean isThereADuplicateMember(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         ArrayList<Member> members = getAllMembers();
         for(Member m : members){
             if(Objects.equals(m.getMemberID(), member.getMemberID())) {
@@ -203,7 +203,7 @@ public class SQLDAO {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public boolean isThereADuplicateBoat(Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public static boolean isThereADuplicateBoat(Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         ArrayList<Boat> boatList = new ArrayList<Boat>();
         for (Boat b : boatList) {
             if (b.equals(boat)) {
@@ -222,7 +222,7 @@ public class SQLDAO {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public void deleteMember(String memID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
+    public static void deleteMember(String memID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         String myQuery = "DELETE from member where memID='"+memID+"'";
 
         Connection c = openConnection();
@@ -231,7 +231,7 @@ public class SQLDAO {
         c.close();
     }
 
-    public void deleteBoat(String memID, Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public static void deleteBoat(String memID, Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
 
         String query;
         if(boat instanceof  Boat){
@@ -254,7 +254,7 @@ public class SQLDAO {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public void updateMember(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public static void updateMember(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         Connection conn = openConnection();
         String myQuery = "UPDATE member SET firstName = ?, lastName = ? ,memID = ?, pnr = ?, nBoats = ? WHERE memID ='"+member.getMemberID()+"'";
 
@@ -280,7 +280,7 @@ public class SQLDAO {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public void updateBoat(String ownerID ,Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public static void updateBoat(String ownerID ,Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         Connection conn = openConnection();
 
         String myQuery = "UPDATE boat SET boatName = ?, boatType = ? ,boatLength = ?, ownerID = ? WHERE ownerID ='"+ownerID+"'";
@@ -305,7 +305,7 @@ public class SQLDAO {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public Connection openConnection() throws ClassNotFoundException, SQLException, IllegalAccessException, InstantiationException {
+    public static Connection openConnection() throws ClassNotFoundException, SQLException, IllegalAccessException, InstantiationException {
 
         DriverManager.setLoginTimeout(5);
         Class.forName("com.mysql.jdbc.Driver").newInstance();                                               //fix jdbc.driver

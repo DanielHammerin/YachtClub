@@ -26,7 +26,17 @@ public class BoatDataHandling {
 		boat.setBoatType(scan.nextLine());
 		boat.setOwnerID(memberID);
 		SQLDAO.saveBoat(memberID, boat);
-
+		try {
+			ArrayList<Member> ml = SQLDAO.getAllMembers();
+			for (int i = 0; i < ml.size(); i++) {
+				if (ml.get(i).equals(memberID)) {
+					ml.get(i).setMemberNBoats(+1);
+					SQLDAO.saveMember(ml.get(i));
+				}
+			}
+		} catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void changeBoatData(String memberID, String boatName){
@@ -61,6 +71,7 @@ public class BoatDataHandling {
 			for (int i = 0; i < memList.size(); i++) {
 				if (memList.get(i).equals(memberID)) {
 					memList.get(i).setMemberNBoats(-1);
+					SQLDAO.saveMember(memList.get(i));
 				}
 				else {
 					System.out.println("You are trying to delete a boat from a member that doesn't exist.");
@@ -68,7 +79,7 @@ public class BoatDataHandling {
 			}
 			for (int i = 0; i < boatList.size(); i++) {
 				if (boatList.get(i).getOwnerID().equals(memberID) && boatList.get(i).getBoatName().equals(boatName)) {
-					boatList.remove(i);
+					SQLDAO.deleteBoat(memberID, boatList.get(i));
 					System.out.println("Boat successfully removed!");
 				}
 			}

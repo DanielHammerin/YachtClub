@@ -75,6 +75,7 @@ public class MemberDataHandling {
 	public void deleteMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         try {
             ArrayList<Member> memArr = SQLDAO.getAllMembers();
+            ArrayList<Boat> boatList = SQLDAO.getAllBoats();
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
                     memArr.remove(i);
@@ -83,6 +84,11 @@ public class MemberDataHandling {
                 } else {
                     System.out.println("There is no member with that ID.");
                     throw new NoSuchElementException();
+                }
+            }
+            for (int i = 0; i < boatList.size(); i++) {
+                if (boatList.get(i).getOwnerID().equals(ID)) {
+                    SQLDAO.deleteBoat(ID, boatList.get(i));
                 }
             }
         } catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){

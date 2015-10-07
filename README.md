@@ -1,4 +1,6 @@
-DIAGRAMS
+
+DOWNLOAD LINK TO THE JAR FILE: http://www.filedropper.com/yachtclub
+
 SEQUENCE DIAGRAM ( FOR AN INPUT ): http://postimg.org/image/i9iq0q2it/
 
 SEQUENCE DIAGRAM ( FOR AN OUTPUT ): http://postimg.org/image/j089edx69/

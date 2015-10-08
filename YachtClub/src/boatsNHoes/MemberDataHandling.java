@@ -39,6 +39,13 @@ public class MemberDataHandling {
         createMemberID(temp);                                               // Calls the method with temp.
         newMember.setMemberID(temp);
         SQLDAO.saveMember(newMember);
+
+        System.out.println("New member data: ");
+        System.out.println("Member first name: " + newMember.getMemberFirstName());
+        System.out.println("Member last name: " + newMember.getMemberLastName());
+        System.out.println("Member ID: " + newMember.getMemberID());
+        System.out.println("Member personal number: " + newMember.getMemberPersonalNumber());
+        System.out.println("Member number of boats: " + newMember.getMemberNBoats());
     }
 
     /**

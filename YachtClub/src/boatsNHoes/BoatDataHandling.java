@@ -29,9 +29,9 @@ public class BoatDataHandling {
 		try {
 			ArrayList<Member> ml = SQLDAO.getAllMembers();
 			for (int i = 0; i < ml.size(); i++) {
-				if (ml.get(i).equals(memberID)) {
-					ml.get(i).setMemberNBoats(+1);
-					SQLDAO.saveMember(ml.get(i));
+				if (ml.get(i).getMemberID().equals(memberID)) {
+					ml.get(i).setMemberNBoats(ml.get(i).getMemberNBoats() + 1);
+					SQLDAO.updateMember(ml.get(i));
 				}
 			}
 		} catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
@@ -51,8 +51,9 @@ public class BoatDataHandling {
 					boatList.get(i).setBoatLength(Integer.parseInt(scan.nextLine()));
 					System.out.println("Set a new Boat Type");
 					boatList.get(i).setBoatType(scan.nextLine());
+
 					SQLDAO.updateBoat(memberID, boatList.get(i));
-					System.out.println("Boat added!");
+					System.out.println("Boat data changed!");
 				}
 				else {
 					System.out.println("ERROR, incorrect owner ID or boat name.");
@@ -69,9 +70,9 @@ public class BoatDataHandling {
 			ArrayList<Boat> boatList = SQLDAO.getAllBoats();
 			ArrayList<Member> memList = SQLDAO.getAllMembers();
 			for (int i = 0; i < memList.size(); i++) {
-				if (memList.get(i).equals(memberID)) {
-					memList.get(i).setMemberNBoats(-1);
-					SQLDAO.saveMember(memList.get(i));
+				if (memList.get(i).getMemberID().equals(memberID)) {
+					memList.get(i).setMemberNBoats(memList.get(i).getMemberNBoats() - 1);
+					SQLDAO.updateMember(memList.get(i));
 				}
 				else {
 					System.out.println("You are trying to delete a boat from a member that doesn't exist.");

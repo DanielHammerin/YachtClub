@@ -1,5 +1,5 @@
 
-DOWNLOAD LINK TO THE JAR FILE: http://www.filedropper.com/yachtclub
+DOWNLOAD LINK TO THE JAR FILE: http://www.filedropper.com/yachtclub_1
 
 MAKE SURE TO LAUNCH THE JAR FILE FROM TERMINAL IN ORDER FOR IT TO START. 
 

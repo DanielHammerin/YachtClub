@@ -16,6 +16,10 @@ public class BoatDataHandling {
 	Boat boat = new Boat();
 	Scanner scan = new Scanner(System.in);
 
+	/**
+	 * @param memberID, member to which boat is added.
+	 * Method for adding a new boat.
+	 */
 	public void addNewBoat(String memberID){
 
 		System.out.println("Set Boat Name");
@@ -30,6 +34,7 @@ public class BoatDataHandling {
 			ArrayList<Member> ml = SQLDAO.getAllMembers();
 			for (int i = 0; i < ml.size(); i++) {
 				if (ml.get(i).getMemberID().equals(memberID)) {
+					System.out.println(ml.get(i).getMemberID());
 					ml.get(i).setMemberNBoats(ml.get(i).getMemberNBoats() + 1);
 					SQLDAO.updateMember(ml.get(i));
 					System.out.println("Boat added!");
@@ -41,33 +46,41 @@ public class BoatDataHandling {
 		}
 	}
 
+	/**
+	 * @param memberID, ownerID of the boat to be changed.
+	 * @param boatName, name of boat to be changed.
+	 */
 	public void changeBoatData(String memberID, String boatName){
 
 		try {
 			ArrayList<Boat> boatList = SQLDAO.getAllBoats();
+			boolean memHasBoats = false;
+			boolean boatByName = false;
 			for(int i = 0; i < boatList.size(); i++) {
 				if(boatList.get(i).getOwnerID().equals(memberID)) {
-					if(boatList.get(i).getBoatName().equals(boatName)) {
-                        System.out.println("Set a new Boat Name: ");
-                        boatList.get(i).setBoatName(scan.nextLine());
-                        System.out.println("Set a new Boat Length");
-                        boatList.get(i).setBoatLength(Integer.parseInt(scan.nextLine()));
-                        System.out.println("Set a new Boat Type");
-                        boatList.get(i).setBoatType(scan.nextLine());
+					memHasBoats = true;
+					if (boatList.get(i).getBoatName().equals(boatName)) {
+						boatByName = true;
+						System.out.println("Set a new Boat Name: ");
+						boatList.get(i).setBoatName(scan.nextLine());
+						System.out.println("Set a new Boat Length");
+						boatList.get(i).setBoatLength(Integer.parseInt(scan.nextLine()));
+						System.out.println("Set a new Boat Type");
+						boatList.get(i).setBoatType(scan.nextLine());
 
-                        SQLDAO.updateBoat(memberID, boatList.get(i));
-                        System.out.println("Boat data changed!");
-                    }
-                    else {
-                        System.out.println("The member has no boat of that name.");
-                        throw new NoSuchElementException();
-                    }
+						SQLDAO.updateBoat(memberID, boatList.get(i));
+					}
 				}
-				else {
-					System.out.println("There is no member with that ID.");
-					throw new NoSuchElementException();
-				}
-		}
+			}
+			if (memHasBoats == false) {
+				System.out.println("This member has no boats.");
+			}
+			else if (boatByName == false) {
+				System.out.println("The member has no boat of that name.");
+			}
+			else {
+				System.out.println("Boat data changed!");
+			}
 		}catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
 			System.out.println("Database connection error.");
 			e.printStackTrace();
@@ -78,28 +91,32 @@ public class BoatDataHandling {
 		try {
 			ArrayList<Boat> boatList = SQLDAO.getAllBoats();
 			ArrayList<Member> memList = SQLDAO.getAllMembers();
-			for (int i = 0; i < boatList.size(); i++) {
-				if (boatList.get(i).getOwnerID().equals(memberID)) {
-					if (boatList.get(i).getBoatName().equals(boatName)) {
-                        SQLDAO.deleteBoat(memberID, boatList.get(i));
-                        System.out.println("Boat successfully removed!");
+			boolean memCheck = false;
+			boolean boatCheck = false;
 
-                        for (int j = 0; j < memList.size(); j++) {
-                            if (memList.get(j).getMemberID().equals(memberID)) {
-                                memList.get(j).setMemberNBoats(memList.get(j).getMemberNBoats() - 1);
-                                SQLDAO.updateMember(memList.get(j));
-                            }
-                        }
-                    }
-                    else {
-                        System.out.println("This member has no boat of that name.");
-                        throw new NoSuchElementException();
-                    }
+			for (int i = 0; i < memList.size(); i++) {
+				if (memList.get(i).getMemberID().equals(memberID)) {
+					memCheck = true;
+					for (int j = 0; j < boatList.size(); j++) {
+						if (boatList.get(j).getOwnerID().equals(memberID) && boatList.get(j).getBoatName().equals(boatName)) {
+							boatCheck = true;
+							memList.get(i).setMemberNBoats(memList.get(i).getMemberNBoats() - 1);				//Remove 1 boat from number of boats.
+
+							SQLDAO.updateMember(memList.get(i));
+							SQLDAO.deleteBoat(memberID, boatList.get(j).getBoatName());
+						}
+					}
+
 				}
-				else {
-					System.out.println("There is no member with that ID.");
-					throw new NoSuchElementException();
-				}
+			}
+			if (memCheck == false) {
+				System.out.println("There is no member with that ID.");
+			}
+			else if (memCheck == true && boatCheck == false) {
+				System.out.println("This member has no boat with that name.");
+			}
+			else {
+				System.out.println("Boat removed successfully!");
 			}
 
 		} catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {

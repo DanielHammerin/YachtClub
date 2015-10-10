@@ -15,13 +15,13 @@ public class MemberDataHandling {
 
     //SQLDAO dao = new SQLDAO();
     Scanner sc = new Scanner(System.in);
-    Member newMember = new Member();
+
     Random randInt = new Random();
 /**
  * Method for creating a new member.
  */
 	public void createMember() {
-
+        Member newMember = new Member();
         System.out.println("Enter the new member's first name: ");
         newMember.setMemberFirstName(sc.nextLine());
         System.out.println("Enter the new member's last name: ");
@@ -36,8 +36,10 @@ public class MemberDataHandling {
         temp = String.valueOf(newMember.getMemberFirstName().charAt(0)) +
                 String.valueOf(newMember.getMemberLastName().charAt(0)) +
                 Integer.toString(randInt.nextInt(900)+100);
-        createMemberID(temp);                                               // Calls the method with temp.
-        newMember.setMemberID(temp);
+        Member tempMem = new Member(newMember.getMemberFirstName(), newMember.getMemberLastName(), newMember.getMemberID(), newMember.getMemberPersonalNumber(), newMember.getMemberNBoats());
+        String tempID = createMemberID(temp, tempMem);// Calls the method with temp.
+        newMember.setMemberID(tempID);
+        newMember.setMemberNBoats(0);
         SQLDAO.saveMember(newMember);
 
         System.out.println("New member data: ");
@@ -55,8 +57,11 @@ public class MemberDataHandling {
 	public void changeMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         try {
             ArrayList<Member> memArr = SQLDAO.getAllMembers();
+            boolean memCheck = false;
+
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
+                    memCheck = true;
                     System.out.println("Change member's first name to: ");
                     memArr.get(i).setMemberFirstName(sc.nextLine());
                     System.out.println("Change member's last name to: ");
@@ -65,12 +70,18 @@ public class MemberDataHandling {
                     memArr.get(i).setMemberPersonalNumber(sc.nextLine());
 
                     SQLDAO.updateMember(memArr.get(i));
-                } else {
-                    System.out.println("There is no member with that ID.");
-                    throw new NoSuchElementException();
+
                 }
+
+            }
+            if (memCheck == false) {
+                System.out.println("There is no member with that ID.");
+            }
+            else {
+                System.out.println("Member data updated successfully!");
             }
         } catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
+            System.out.println("Database connection error.");
             e.printStackTrace();
         }
 	}
@@ -83,23 +94,30 @@ public class MemberDataHandling {
         try {
             ArrayList<Member> memArr = SQLDAO.getAllMembers();
             ArrayList<Boat> boatList = SQLDAO.getAllBoats();
+            boolean memCheck = false;
+
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
-                    memArr.remove(i);
                     SQLDAO.deleteMember(ID);
-                    System.out.println("Member deleted!");
-                } else {
-                    System.out.println("There is no member with that ID.");
-                    throw new NoSuchElementException();
+                    memCheck = true;
                 }
             }
             for (int i = 0; i < boatList.size(); i++) {
                 if (boatList.get(i).getOwnerID().equals(ID)) {
-                    SQLDAO.deleteBoat(ID, boatList.get(i));
+                    SQLDAO.deleteBoat(ID, boatList.get(i).getBoatName());
                 }
             }
+
+            if (memCheck == false) {
+                System.out.println("There is no member with that ID.");
+            }
+            else {
+                System.out.println("Member deleted!");
+            }
+
         } catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
-                e.printStackTrace();
+            System.out.println("Database connection error.");
+            e.printStackTrace();
             }
     }
 
@@ -108,22 +126,71 @@ public class MemberDataHandling {
      * @param ID, the member ID of the member to be found.
      */
 	public void lookUpMember(String ID) {
-        String errmsg = "No such member!";
         try {
             ArrayList<Member> memArr = SQLDAO.getAllMembers();
+            boolean memCheck = false;
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
+                    memCheck = true;
+                    System.out.println("=====Member data=====");
                     System.out.println("Member first name: " + memArr.get(i).getMemberFirstName());
                     System.out.println("Member last name: " + memArr.get(i).getMemberLastName());
                     System.out.println("Member ID: " + memArr.get(i).getMemberID());
                     System.out.println("Member personal number: " + memArr.get(i).getMemberPersonalNumber());
                     System.out.println("Member number of boats: " + memArr.get(i).getMemberNBoats());
-                } else {
-                    System.out.println("No such member found!");
-                    throw new NoSuchElementException();
                 }
             }
+            if (memCheck == false) {
+                System.out.println("No such member found!");
+            }
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+            System.out.println("Database connection error.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param v, does the user want a verbose or compact list?
+     * Method for displaying all members and information.
+     */
+    public void displayAllMembers(boolean v) {
+        try {
+            ArrayList<Member> memArr = SQLDAO.getAllMembers();
+            ArrayList<Boat> boatList = SQLDAO.getAllBoats();
+
+            if (v == true) {
+                for (int i = 0; i < memArr.size(); i++) {
+                    System.out.println();
+                    System.out.println("==========Member data==========");
+                    System.out.println("Member ID: " + memArr.get(i).getMemberID());
+                    System.out.println("Member first name: " + memArr.get(i).getMemberFirstName());
+                    System.out.println("Member last name: " + memArr.get(i).getMemberLastName());
+                    System.out.println("Member personal number: " + memArr.get(i).getMemberPersonalNumber());
+                    System.out.println("Member number of boats: " + memArr.get(i).getMemberNBoats());
+                    System.out.println("==========" + memArr.get(i).getMemberID() + "boats ==========");
+                    for (int j = 0; j < boatList.size(); j++) {
+                        if (boatList.get(j).getOwnerID().equals(memArr.get(i).getMemberID())) {
+                            System.out.println();
+                            System.out.println("=======================");
+                            System.out.println("Boat name: " + boatList.get(j).getBoatName());
+                            System.out.println("Boat type: " + boatList.get(j).getBoatType());
+                            System.out.println("Boat length: " + boatList.get(j).getBoatLength());
+                            System.out.println("=======================");
+                        }
+                    }
+                }
+            } else if (v == false) {
+                for (int i = 0; i < memArr.size(); i++) {
+                    System.out.println("=====Member data=====");
+                    System.out.println("Member ID: " + memArr.get(i).getMemberID());
+                    System.out.println("Member first name: " + memArr.get(i).getMemberFirstName());
+                    System.out.println("Member last name: " + memArr.get(i).getMemberLastName());
+                    System.out.println("Member number of boats: " + memArr.get(i).getMemberNBoats());
+                }
+            }
+        }
+        catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+            System.out.println("Database connection error.");
             e.printStackTrace();
         }
     }
@@ -131,7 +198,7 @@ public class MemberDataHandling {
      * Method for creating a unique member ID.
      * @param temp, temp is made in createMember() and is checked here to ensure that it is unique.
      */
-    public String createMemberID(String temp) {
+    public String createMemberID(String temp, Member newMember) {
         try {
             ArrayList<Member> memArr = SQLDAO.getAllMembers();
             for (int i = 0; i < memArr.size(); i++) {
@@ -139,13 +206,17 @@ public class MemberDataHandling {
                 return temp;
             }
             else if (memArr.get(i).getMemberID().equals(temp)) {                        // If there is already a member with this ID, randomize a new number.
-                temp = String.valueOf(newMember.getMemberFirstName().charAt(0)) +
-                        String.valueOf(newMember.getMemberLastName().charAt(0)) +
-                        Integer.toString(randInt.nextInt(900)+100);
-                createMemberID(temp);
+
+                char firstC = newMember.getMemberFirstName().charAt(0);
+                char secondC = newMember.getMemberLastName().charAt(0);
+                int rndm = randInt.nextInt(900)+100;
+                System.out.println(i + " firstC: " + firstC + " secondC: " + secondC + " rndm: " + rndm);
+                temp = firstC+secondC+Integer.toString(rndm);
+                createMemberID(temp, newMember);
             }
         }
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+            System.out.println("Database connection error.");
             e.printStackTrace();
         }
         return temp;

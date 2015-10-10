@@ -2,6 +2,9 @@ package boatsNHoes;
 
 import java.util.Random;
 
+/**
+ * Created by Markus Alshraydeh 2015-10-01
+ */
 public class Boat {
 	
 	private String boatName;
@@ -11,13 +14,13 @@ public class Boat {
 	
 	Member member = new Member();
 	
-	public void Boat(String name,String type, int length, String owner)
-	{
+	public Boat(String name,String type, int length, String owner) {
 		boatName = name;
 		boatType = type;
 		boatLength = length;
 		ownerID = owner;
 	}
+	public Boat () { }
 
 
 	public void setBoatName(String boatName){

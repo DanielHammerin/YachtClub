@@ -68,6 +68,39 @@ public class SQLDAO {
             System.out.println("Couldn't save boat because of a database connection error.");
         }
     }
+    /**
+     * @param memID, the member ID of the member to be removed.
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
+    public static void deleteMember(String memID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
+        String myQuery = "DELETE from member where memID='"+memID+"'";
+
+        Connection c = openConnection();
+        Statement s = c.createStatement();
+        s.executeUpdate(myQuery);
+        c.close();
+    }
+
+    /**
+     * @param memID, owner of the boat to be removed
+     * @param name, name of boat to be removed.
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
+    public static void deleteBoat(String memID, String name) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+
+        String query= "DELETE from boat where ownerID='"+memID+"' AND boatName='"+name+"'";
+
+        Connection c = openConnection();
+        Statement s = c.createStatement();
+        s.executeUpdate(query);
+        c.close();
+    }
 
     /**
      * Retrieves all members from the memberlist table.
@@ -151,18 +184,18 @@ public class SQLDAO {
 
     /**
      * This method returns the boats of a member
-     * @param member
+     * @param ownerID
      * @return a treeset containing the boats
      * @throws ClassNotFoundException
      * @throws SQLException
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static ArrayList<Boat> getMemberBoats(Member member) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public static ArrayList<Boat> getMemberBoats(String ownerID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         ArrayList<Boat> boats = new ArrayList<>();
         Connection conn = openConnection();
         Boat boat = new Boat();
-        String myQuery = "SELECT FROM boat WHERE ownerID = '"+member.getMemberID()+"'" ;
+        String myQuery = "SELECT FROM boat WHERE ownerID = '"+ownerID+"'" ;
 
         ResultSet rs = conn.createStatement().executeQuery(myQuery);
 
@@ -214,37 +247,6 @@ public class SQLDAO {
 
     }
 
-    /**
-     *
-     * @param memID, the member ID of the member to be removed.
-     * @throws ClassNotFoundException
-     * @throws SQLException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     */
-    public static void deleteMember(String memID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
-        String myQuery = "DELETE from member where memID='"+memID+"'";
-
-        Connection c = openConnection();
-        Statement s = c.createStatement();
-        s.executeUpdate(myQuery);
-        c.close();
-    }
-
-    public static void deleteBoat(String memID, Boat boat) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-
-        String query;
-        if(boat instanceof  Boat){
-            query= "DELETE from boat where ownerID='"+memID+"'";
-        }
-        else {
-            throw new NoSuchElementException();
-        }
-        Connection c = openConnection();
-        Statement s = c.createStatement();
-        s.executeUpdate(query);
-        c.close();
-    }
 
     /**
      * This method updates a member info

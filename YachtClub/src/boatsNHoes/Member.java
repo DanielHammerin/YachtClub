@@ -8,55 +8,57 @@ import java.util.ArrayList;
  */
 public class Member {
 	
-	private static String name1;
-	private static String name2;
-	private static String mid;
-	private static String pnr;
-	private static int nBoats;
+	private String name1;
+	private String name2;
+	private String mid;
+	private String pnr;
+	private int nBoats;
 
 	/*
 	 * Constructor for the member object.
 	 */
-	public void member(String firstName, String lastName, String memberID, String personalNumber, int numberOfBoats) {
-		Member.name1 = firstName;
-		Member.name2 = lastName;
-		Member.pnr = personalNumber;
-		Member.mid = memberID ;
-		Member.nBoats = numberOfBoats;
+	public Member(String firstName, String lastName, String memberID, String personalNumber, int numberOfBoats) {
+		this.name1 = firstName;
+		this.name2 = lastName;
+		this.pnr = personalNumber;
+		this.mid = memberID ;
+		this.nBoats = numberOfBoats;
 	}
+    public Member() {}
+
 	/**
 	 * Getters and setters for the member object parameters.
 	 */
 	public void setMemberFirstName(String firstName) {
-		Member.name1 = firstName;
+		this.name1 = firstName;
 	}
 	public void setMemberLastName(String lastName) {
-		Member.name2 = lastName;
+        this.name2 = lastName;
 	}
 	public void setMemberPersonalNumber(String pn) {
-		Member.pnr = pn;
+        this.pnr = pn;
 	}
 	public void setMemberID(String memID) {
-		Member.mid = memID;
+        this.mid = memID;
 	}
 	public void setMemberNBoats(int nBoats) {
-		Member.nBoats = nBoats;
+        this.nBoats = nBoats;
 	}
 
 	public String getMemberFirstName() {
-		return name1;
+		return this.name1;
 	}
 	public String getMemberLastName() {
-		return name2;
+		return this.name2;
 	}
 	public String getMemberPersonalNumber() {
-		return pnr;
+		return this.pnr;
 	}
 	public String getMemberID() {
-		return mid;
+		return this.mid;
 	}
-	public int getMemberNBoats() {
-		return nBoats;
+    public int getMemberNBoats() {
+		return this.nBoats;
 	}
 	
 }

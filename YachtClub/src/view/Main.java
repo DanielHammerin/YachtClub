@@ -1,6 +1,7 @@
-package boatsNHoes;
+package view;
 
-import controller.SQLDAO;
+import model.BoatDataHandling;
+import model.MemberDataHandling;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -23,7 +24,7 @@ public class Main {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         while (x != 0) {
-            System.out.println("=====================================================");
+            System.out.println("=====================================================");        //Header for program.
             System.out.println("Enter any of the commands to do various things.");
             System.out.println("Cmd: 'addmember' = add new member");
             System.out.println("Cmd: 'editmember' = edit member");

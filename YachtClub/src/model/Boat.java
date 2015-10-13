@@ -1,6 +1,4 @@
-package boatsNHoes;
-
-import java.util.Random;
+package model;
 
 /**
  * Created by Markus Alshraydeh 2015-10-01

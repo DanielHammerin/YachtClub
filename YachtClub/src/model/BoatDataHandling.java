@@ -1,4 +1,4 @@
-package boatsNHoes;
+package model;
 
 import controller.SQLDAO;
 
@@ -46,6 +46,7 @@ public class BoatDataHandling {
 	}
 
 	/**
+	 * Method for changing boat data
 	 * @param memberID, ownerID of the boat to be changed.
 	 * @param boatName, name of boat to be changed.
 	 */
@@ -71,7 +72,7 @@ public class BoatDataHandling {
 					}
 				}
 			}
-			/**
+			/*
 			 * Depending on boolean statuses, a correct and relevant error message is displayed
 			 */
 			if (memHasBoats == false) {
@@ -89,6 +90,11 @@ public class BoatDataHandling {
 		}
 	}
 
+	/**
+	 * Method for deleting a boat
+	 * @param memberID
+	 * @param boatName
+	 */
 	public void deleteBoat(String memberID, String boatName){
 		try {
 			ArrayList<Boat> boatList = SQLDAO.getAllBoats();
@@ -111,7 +117,7 @@ public class BoatDataHandling {
 
 				}
 			}
-			/**
+			/*
 			 * Depending on boolean statuses, a correct and relevant error message is displayed
 			 */
 			if (memCheck == false) {

@@ -1,7 +1,7 @@
 package controller;
 
 
-import boatsNHoes.*;
+import model.*;
 import java.sql.*;
 import java.util.*;
 

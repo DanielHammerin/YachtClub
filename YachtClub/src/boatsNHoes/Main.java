@@ -52,8 +52,10 @@ public class Main {
                 String memID = getMemID();
                 mdh.deleteMember(memID);
             } else if (command.equals(lookAtMember)) {
+                boolean v = false;
+                v = isVerbose(v);
                 String memID = getMemID();
-                mdh.lookUpMember(memID);
+                mdh.lookUpMember(memID, v);
             } else if (command.equals(addNewBoat)) {
                 String ownerID = getMemID();
                 bdh.addNewBoat(ownerID);
@@ -72,38 +74,41 @@ public class Main {
             } else if (command.equals(exit)) {
                 x = 0;
             }
-            else {
+            else {  //If there is no valid input string
                 System.out.println("Operator, there is no such command. The mental health service has been notified.");
             }
         }
     }
-    protected static String getMemID() {
+    protected static String getMemID() { //Called so the user can chose which member to access.
         Scanner scMem = new Scanner(System.in);
         System.out.println("Please enter the ID of the member you wish to access: ");
         String memID = scMem.nextLine();
         return memID;
     }
 
-    protected static String getBoatName() {
+    protected static String getBoatName() {   //called so the user can chose which boat to access.
         Scanner scBoatName = new Scanner(System.in);
         System.out.println("Please enter the name of the boat to be accessed: ");
         String boatName = scBoatName.nextLine();
         return boatName;
     }
-    protected static boolean isVerbose(boolean verbose) {
+    protected static boolean isVerbose(boolean verbose) {   //Does the user want a verbose or compact list.
         Scanner sc = new Scanner(System.in);
         System.out.println("Show compact or verbose member list?");
-        System.out.println("y = yes / n = no");
+        System.out.println("c = compact / v = verbose");
         String choice = sc.nextLine();
-        if (choice.equals("y")) {
+        if (choice.equals("v")) {
             verbose = true;
+            return verbose;
         }
-        else if (choice.equals("n")){
+        else if (choice.equals("c")){
             verbose = false;
+            return verbose;
         }
         else {
             System.out.println("I'm terribly sorry, operator, but that doesn't answer my question.");
+            return verbose;
         }
-        return verbose;
+
     }
 }

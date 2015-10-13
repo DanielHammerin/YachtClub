@@ -4,7 +4,6 @@ import controller.SQLDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -72,6 +71,9 @@ public class BoatDataHandling {
 					}
 				}
 			}
+			/**
+			 * Depending on boolean statuses, a correct and relevant error message is displayed
+			 */
 			if (memHasBoats == false) {
 				System.out.println("This member has no boats.");
 			}
@@ -109,6 +111,9 @@ public class BoatDataHandling {
 
 				}
 			}
+			/**
+			 * Depending on boolean statuses, a correct and relevant error message is displayed
+			 */
 			if (memCheck == false) {
 				System.out.println("There is no member with that ID.");
 			}

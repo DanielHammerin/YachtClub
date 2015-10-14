@@ -10,3 +10,7 @@ SEQUENCE DIAGRAM ( FOR AN INPUT ): http://postimg.org/image/i9iq0q2it/
 SEQUENCE DIAGRAM ( FOR AN OUTPUT ): http://postimg.org/image/j089edx69/
 
 UML CLASS DIAGRAM: http://postimg.org/image/ccp94gheh/ 
+
+INSTRUCTIONS FOR SETTING UP XAMPP AND DATABASE FOR THE PROGRAM: http://www.filedropper.com/howtosetupxampp  
+
+NOTE: If the jar file for some reason does not work on your system, clone the project code and run it on your personal java IDE.

@@ -14,3 +14,19 @@ UML CLASS DIAGRAM: http://postimg.org/image/ccp94gheh/
 INSTRUCTIONS FOR SETTING UP XAMPP AND DATABASE FOR THE PROGRAM: http://www.filedropper.com/howtosetupxampp  
 
 NOTE: If the jar file for some reason does not work on your system, clone the project code and run it on your personal java IDE.
+
+FOR TEACHER: 
+
+Here are the peer reviews, both the ones that we gave and the ones that we recived. 
+
+Recived: 
+
+From Ola.F : http://www.filedropper.com/peerreviewmarkusalshraydeh 
+
+From Mauro.P : http://www.filedropper.com/peerreviewmarkusalshraydeh_1 
+
+Gave: 
+
+To J.P: http://www.filedropper.com/peerreviewforjp1
+
+To A.A: http://www.filedropper.com/peerreviewforgroup2 

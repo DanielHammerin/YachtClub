@@ -17,16 +17,16 @@ NOTE: If the jar file for some reason does not work on your system, clone the pr
 
 FOR TEACHER: 
 
-Here are the peer reviews, both the ones that we gave and the ones that we recived. 
+Update: Here are the peer reviews, both the ones that we gave and the ones that we recived (updated 18 october since filedropper.com apperently does not hold on to youre files for more than 3 days). 
 
 Recived: 
 
-From Ola.F : http://www.filedropper.com/peerreviewmarkusalshraydeh 
+From Ola.F : http://s000.tinyupload.com/index.php?file_id=05940164786561571722
 
-From Mauro.P : http://www.filedropper.com/peerreviewmarkusalshraydeh_1 
+From Mauro.P : http://s000.tinyupload.com/index.php?file_id=25032793918468716111 
 
 Gave: 
 
-To J.P: http://www.filedropper.com/peerreviewforjp1
+To J.P: http://s000.tinyupload.com/index.php?file_id=46804233116681930751 
 
-To A.A: http://www.filedropper.com/peerreviewforgroup2 
+To A.A: http://s000.tinyupload.com/index.php?file_id=02842134815775943250 

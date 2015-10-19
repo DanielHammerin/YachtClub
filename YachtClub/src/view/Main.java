@@ -108,7 +108,7 @@ public class Main {
         }
         else {
             System.out.println("I'm terribly sorry, operator, but that doesn't answer my question.");
-            return verbose;
+            return isVerbose(verbose);
         }
 
     }

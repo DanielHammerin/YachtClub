@@ -311,7 +311,7 @@ public class SQLDAO {
 
         DriverManager.setLoginTimeout(5);
         Class.forName("com.mysql.jdbc.Driver").newInstance();                                               //fix jdbc.driver
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/YachtClubDB","root","");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/YachtClub1","root","");
         return conn;
     }
 

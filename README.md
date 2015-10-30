@@ -11,6 +11,8 @@ SEQUENCE DIAGRAM ( FOR AN OUTPUT ): http://postimg.org/image/j089edx69/
 
 UML CLASS DIAGRAM: http://postimg.org/image/ccp94gheh/ 
 
+IN ORDER FOR THE PROGRAM TO ACCESS THE DATABASE INCLUDE THIS FILE IN YOUR JAVA PROJECT FILES ( BY DOWNLOADING IT ): http://mvnrepository.com/artifact/mysql/mysql-connector-java/5.1.36
+
 INSTRUCTIONS FOR SETTING UP XAMPP AND DATABASE FOR THE PROGRAM: http://s000.tinyupload.com/index.php?file_id=08083271586897792688
 
 NOTE: If the jar file for some reason does not work on your system, clone the project code and run it on your personal java IDE.

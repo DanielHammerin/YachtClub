@@ -9,7 +9,7 @@ SEQUENCE DIAGRAM ( FOR AN INPUT ): http://postimg.org/image/i9iq0q2it/
 
 SEQUENCE DIAGRAM ( FOR AN OUTPUT ): http://postimg.org/image/j089edx69/
 
-UML CLASS DIAGRAM: http://postimg.org/image/ccp94gheh/ 
+UML CLASS DIAGRAM: http://s000.tinyupload.com/index.php?file_id=93380147045367986862
 
 IN ORDER FOR THE PROGRAM TO ACCESS THE DATABASE INCLUDE THIS FILE IN YOUR JAVA PROJECT FILES ( BY DOWNLOADING IT ): http://mvnrepository.com/artifact/mysql/mysql-connector-java/5.1.36
 

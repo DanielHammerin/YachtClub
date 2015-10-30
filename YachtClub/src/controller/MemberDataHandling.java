@@ -1,6 +1,11 @@
-package model;
+package controller;
 
-import controller.SQLDAO;
+
+import model.Boat;
+import model.Member;
+import model.MemberModel;
+import model.SQLDAO;
+import view.MainView;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -11,46 +16,42 @@ import java.util.*;
  */
 public class MemberDataHandling {
 
-    Scanner sc = new Scanner(System.in);
+    MemberModel mm = new MemberModel();
+    MainView view = new MainView();
     Random randInt = new Random();
 /**
  * Method for creating a new member.
  */
 	public void createMember() {
         Member newMember = new Member();
-        System.out.println("Enter the new member's first name: ");
-        newMember.setMemberFirstName(sc.nextLine());
-        System.out.println("Enter the new member's last name: ");
-        newMember.setMemberLastName(sc.nextLine());
-        System.out.println("Enter the new member's personal number: ");
-        newMember.setMemberPersonalNumber((sc.nextLine()));
+        view.printMessages("emfn");
+        newMember.setMemberFirstName(view.getInput());
+        view.printMessages("emln");
+        newMember.setMemberLastName(view.getInput());
+        view.printMessages("empnr");
+        newMember.setMemberPersonalNumber(view.getInput());
 
-        /*
-         * Below is the method for creating a member ID
-         */
+        //Create the unique member ID and check it so ensure its originality.
         String temp;
         temp = String.valueOf(newMember.getMemberFirstName().charAt(0)) +
                 String.valueOf(newMember.getMemberLastName().charAt(0)) +
                 Integer.toString(randInt.nextInt(900)+100);
         Member tempMem = new Member(newMember.getMemberFirstName(), newMember.getMemberLastName(), newMember.getMemberID(), newMember.getMemberPersonalNumber(), newMember.getMemberNBoats());
+
         String tempID = createMemberID(temp, tempMem);// Calls the method with temp.
         newMember.setMemberID(tempID);
         newMember.setMemberNBoats(0);
-        SQLDAO.saveMember(newMember);
 
-        System.out.println("New member data: ");
-        System.out.println("Member first name: " + newMember.getMemberFirstName());
-        System.out.println("Member last name: " + newMember.getMemberLastName());
-        System.out.println("Member ID: " + newMember.getMemberID());
-        System.out.println("Member personal number: " + newMember.getMemberPersonalNumber());
-        System.out.println("Member number of boats: " + newMember.getMemberNBoats());
+        mm.saveMember(newMember); // Store in DB
+        view.printMessages("am");
+        view.printMember(newMember.getMemberFirstName(), newMember.getMemberLastName(), newMember.getMemberID(), newMember.getMemberPersonalNumber(), newMember.getMemberNBoats());
     }
 
     /**
      * Method for changing an already existing member.
      * @param ID, the member ID of the member to be changed.
      */
-	public void changeMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+	public void changeMember(String ID)  {
         try {
             ArrayList<Member> memArr = SQLDAO.getAllMembers();
             boolean memCheck = false;
@@ -58,26 +59,24 @@ public class MemberDataHandling {
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
                     memCheck = true;
-                    System.out.println("Change member's first name to: ");
-                    memArr.get(i).setMemberFirstName(sc.nextLine());
-                    System.out.println("Change member's last name to: ");
-                    memArr.get(i).setMemberLastName(sc.nextLine());
-                    System.out.println("Change member's personal number to: ");
-                    memArr.get(i).setMemberPersonalNumber(sc.nextLine());
+                    view.printMessages("cmfn");
+                    memArr.get(i).setMemberFirstName(view.getInput());
+                    view.printMessages("cmln");
+                    memArr.get(i).setMemberLastName(view.getInput());
+                    view.printMessages("cmpnr");
+                    memArr.get(i).setMemberPersonalNumber(view.getInput());
 
-                    SQLDAO.updateMember(memArr.get(i));
-
+                    mm.changeMember(memArr.get(i));         //Store in DB
                 }
-
             }
             /*
              * Depending on boolean statuses, a correct and relevant error message is displayed
              */
             if (memCheck == false) {
-                System.out.println("There is no member with that ID.");
+                view.printMessages("nmwi");
             }
             else {
-                System.out.println("Member data updated successfully!");
+                view.printMessages("mus");
             }
         } catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
             System.out.println("Database connection error.");
@@ -89,7 +88,7 @@ public class MemberDataHandling {
      * Method for deleting a member
      * @param ID, the member ID of the member to be removed.
      */
-	public void deleteMember(String ID) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+	public void deleteMember(String ID) {
         try {
             ArrayList<Member> memArr = SQLDAO.getAllMembers();
             ArrayList<Boat> boatList = SQLDAO.getAllBoats();
@@ -97,7 +96,7 @@ public class MemberDataHandling {
 
             for (int i = 0; i < memArr.size(); i++) {
                 if (memArr.get(i).getMemberID().equals(ID)) {
-                    SQLDAO.deleteMember(ID);
+                    mm.deleteMember(memArr.get(i).getMemberID());
                     memCheck = true;
                 }
             }
@@ -110,10 +109,10 @@ public class MemberDataHandling {
              * Depending on boolean statuses, a correct and relevant error message is displayed
              */
             if (memCheck == false) {
-                System.out.println("There is no member with that ID.");
+                view.printMessages("nmwi");
             }
             else {
-                System.out.println("Member deleted!");
+                view.printMessages("dm");
             }
 
         } catch(ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e){
@@ -137,20 +136,19 @@ public class MemberDataHandling {
                 for (int i = 0; i < memArr.size(); i++) {
                     if (memArr.get(i).getMemberID().equals(ID)) {
                         memCheck = true;
-                        System.out.println("=====Member data=====");
-                        System.out.println("Member first name: " + memArr.get(i).getMemberFirstName());
-                        System.out.println("Member last name: " + memArr.get(i).getMemberLastName());
-                        System.out.println("Member ID: " + memArr.get(i).getMemberID());
-                        System.out.println("Member personal number: " + memArr.get(i).getMemberPersonalNumber());
-                        System.out.println("Member number of boats: " + memArr.get(i).getMemberNBoats());
+                        String n1 = memArr.get(i).getMemberFirstName();
+                        String n2 = memArr.get(i).getMemberLastName();
+                        String memID = memArr.get(i).getMemberID();
+                        String pnr = memArr.get(i).getMemberPersonalNumber();
+                        int nb = memArr.get(i).getMemberNBoats();
+                        view.printMember(n1, n2, memID, pnr, nb);
+
                         for (int j = 0; j < boatList.size(); j++) {
                             if (boatList.get(j).getOwnerID().equals(memArr.get(i).getMemberID())) {
-                                System.out.println();
-                                System.out.println("=======================");
-                                System.out.println("Boat name: " + boatList.get(j).getBoatName());
-                                System.out.println("Boat type: " + boatList.get(j).getBoatType());
-                                System.out.println("Boat length: " + boatList.get(j).getBoatLength());
-                                System.out.println("=======================");
+                                String bn = boatList.get(j).getBoatName();
+                                String bt = boatList.get(j).getBoatType();
+                                int bl = boatList.get(j).getBoatLength();
+                                view.printMemberBoats(bn, bt, bl);
                             }
                         }
                     }
@@ -160,11 +158,11 @@ public class MemberDataHandling {
                 for (int i = 0; i < memArr.size(); i++) {
                     if (memArr.get(i).getMemberID().equals(ID)) {
                         memCheck = true;
-                        System.out.println("=====Member data=====");
-                        System.out.println("Member first name: " + memArr.get(i).getMemberFirstName());
-                        System.out.println("Member last name: " + memArr.get(i).getMemberLastName());
-                        System.out.println("Member ID: " + memArr.get(i).getMemberID());
-                        System.out.println("Member number of boats: " + memArr.get(i).getMemberNBoats());
+                        String n1 = memArr.get(i).getMemberFirstName();
+                        String n2 = memArr.get(i).getMemberLastName();
+                        String memID = memArr.get(i).getMemberID();
+                        int nb = memArr.get(i).getMemberNBoats();
+                        view.printCompactMember(n1, n2, memID, nb);
                     }
                 }
             }
@@ -172,7 +170,7 @@ public class MemberDataHandling {
              * Depending on boolean statuses, a correct and relevant error message is displayed
              */
             if (memCheck == false) {
-                System.out.println("No such member found!");
+                view.printMessages("nmf");
             }
         } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
             System.out.println("Database connection error.");
@@ -191,32 +189,32 @@ public class MemberDataHandling {
 
             if (v == true) {                                                                //If verbose is requested, print member data and corresponding boat data.
                 for (int i = 0; i < memArr.size(); i++) {
-                    System.out.println();
-                    System.out.println("==========Member data==========");
-                    System.out.println("Member ID: " + memArr.get(i).getMemberID());
-                    System.out.println("Member first name: " + memArr.get(i).getMemberFirstName());
-                    System.out.println("Member last name: " + memArr.get(i).getMemberLastName());
-                    System.out.println("Member personal number: " + memArr.get(i).getMemberPersonalNumber());
-                    System.out.println("Member number of boats: " + memArr.get(i).getMemberNBoats());
-                    System.out.println("==========" + memArr.get(i).getMemberID() + "boats==========");
+                    String n1 = memArr.get(i).getMemberFirstName();
+                    String n2 = memArr.get(i).getMemberLastName();
+                    String memID = memArr.get(i).getMemberID();
+                    String pnr = memArr.get(i).getMemberPersonalNumber();
+                    int nb = memArr.get(i).getMemberNBoats();
+                    view.printMember(n1, n2, memID, pnr, nb);
+
+                    String id = memArr.get(i).getMemberID();
+                    view.printMemberBoatLine(id);
+
                     for (int j = 0; j < boatList.size(); j++) {
                         if (boatList.get(j).getOwnerID().equals(memArr.get(i).getMemberID())) {
-                            System.out.println();
-                            System.out.println("=======================");
-                            System.out.println("Boat name: " + boatList.get(j).getBoatName());
-                            System.out.println("Boat type: " + boatList.get(j).getBoatType());
-                            System.out.println("Boat length: " + boatList.get(j).getBoatLength());
-                            System.out.println("=======================");
+                            String bn = boatList.get(j).getBoatName();
+                            String bt = boatList.get(j).getBoatType();
+                            int bl = boatList.get(j).getBoatLength();
+                            view.printMemberBoats(bn, bt, bl);
                         }
                     }
                 }
             } else if (v == false) {                                                                    //Else, just member data.
                 for (int i = 0; i < memArr.size(); i++) {
-                    System.out.println("=====Member data=====");
-                    System.out.println("Member ID: " + memArr.get(i).getMemberID());
-                    System.out.println("Member first name: " + memArr.get(i).getMemberFirstName());
-                    System.out.println("Member last name: " + memArr.get(i).getMemberLastName());
-                    System.out.println("Member number of boats: " + memArr.get(i).getMemberNBoats());
+                    String n1 = memArr.get(i).getMemberFirstName();
+                    String n2 = memArr.get(i).getMemberLastName();
+                    String memID = memArr.get(i).getMemberID();
+                    int nb = memArr.get(i).getMemberNBoats();
+                    view.printCompactMember(n1, n2, memID, nb);
                 }
             }
         }

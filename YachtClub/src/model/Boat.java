@@ -1,5 +1,9 @@
 package model;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  * Created by Markus Alshraydeh 2015-10-01
  */
@@ -9,8 +13,6 @@ public class Boat {
 	private String boatType;
 	private int boatLength;
 	private String ownerID;
-	
-	Member member = new Member();
 	
 	public Boat(String name,String type, int length, String owner) {
 		boatName = name;
@@ -56,7 +58,8 @@ public class Boat {
 	public String getOwnerID() {
 		return ownerID;
 	}
-	
+
+
 }
 
 
